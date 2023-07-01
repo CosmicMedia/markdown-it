@@ -9,7 +9,7 @@
     "markdown-it",
     "markdown-it-plugin"
   ],
-  "repository": "markdown-it/markdown-it",
+  "repository": "cosmicmedia/markdown-it",
   "license": "MIT",
   "main": "index.js",
   "bin": {
