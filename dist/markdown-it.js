@@ -1,4 +1,4 @@
-/*! @cosmicmedia/markdown-it 13.0.2 https://github.com/cosmicmedia/markdown-it @license MIT */
+/*! @cosmicmedia/markdown-it 13.1.0 https://github.com/cosmicmedia/markdown-it @license MIT */
 (function(global, factory) {
   typeof exports === "object" && typeof module !== "undefined" ? module.exports = factory() : typeof define === "function" && define.amd ? define(factory) : (global = typeof globalThis !== "undefined" ? globalThis : global || self, 
   global.markdownit = factory());
@@ -5783,7 +5783,7 @@
   // timestamp regex (YY:YX:YX) where Y is an optional digit and X is a required digit
     var SCHEME_RE = /([0-9]?[0-9]:)?[0-5]?[0-9]:[0-5]?[0-9]/;
   // pending regex for the proto part
-    var SCHEME_PENDING = /[0-9][0-9]/;
+    var SCHEME_PENDING = /([0-9]?[0-9]):([0-9])/;
   var clickable_timestamp = function clickable_timestamp(state, silent) {
     var pos, match, proto, link, url, fullUrl, token;
     if (!state.md.options.timestamps) return false;
@@ -5794,13 +5794,14 @@
         if (state.src.charCodeAt(pos) !== 58 /* : */) {
       return false;
     }
+    var _pending = `${state.pending}${String.fromCharCode(state.src.charCodeAt(pos))}${String.fromCharCode(state.src.charCodeAt(pos + 1))}`;
     // match the pending part to our pending regex
-        match = state.pending.match(SCHEME_PENDING);
+        match = _pending.match(SCHEME_PENDING);
     if (!match) {
       return false;
     }
     // create a proto from our match
-        proto = match[0];
+        proto = match[0].slice(0, match[0].length - 2);
     // extract the full timestamp and match it against our complete regex
         link = state.src.slice(pos - proto.length).match(SCHEME_RE);
     if (!link) return false;

@@ -34,7 +34,7 @@ Markdown parser done right. Fast and easy to extend.
 **node.js**:
 
 ```bash
-npm install markdown-it --save
+npm install @cosmicmedia/markdown-it --save
 ```
 
 **browser (CDN):**
