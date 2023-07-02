@@ -1,4 +1,4 @@
-/*! @cosmicmedia/markdown-it 13.1.0 https://github.com/cosmicmedia/markdown-it @license MIT */
+/*! @cosmicmedia/markdown-it 13.1.1 https://github.com/cosmicmedia/markdown-it @license MIT */
 (function(global, factory) {
   typeof exports === "object" && typeof module !== "undefined" ? module.exports = factory() : typeof define === "function" && define.amd ? define(factory) : (global = typeof globalThis !== "undefined" ? globalThis : global || self, 
   global.markdownit = factory());
@@ -5794,7 +5794,9 @@
         if (state.src.charCodeAt(pos) !== 58 /* : */) {
       return false;
     }
-    var _pending = `${state.pending}${String.fromCharCode(state.src.charCodeAt(pos))}${String.fromCharCode(state.src.charCodeAt(pos + 1))}`;
+    var _colon = String.fromCharCode(state.src.charCodeAt(pos));
+    var _next = String.fromCharCode(state.src.charCodeAt(pos + 1));
+    var _pending = state.pending + _colon + _next;
     // match the pending part to our pending regex
         match = _pending.match(SCHEME_PENDING);
     if (!match) {
@@ -5808,11 +5810,14 @@
     url = link[0];
     // disallow '*' at the end of the link (conflicts with emphasis)
         url = url.replace(/\*+$/, "");
-    fullUrl = state.md.options.timestampHrefFormat.replace("$$time$$", url);
+    fullUrl = state.md.options.timestampActionFormat.replaceAll("$$time$$", url);
+    var useOnClick = state.md.options.useTimestampOnClick;
+    var classes = state.md.options.timestampLinkClasses;
+    var classAttr = classes ? classes.join(" ") : "";
     if (!silent) {
       state.pending = state.pending.slice(0, -proto.length);
       token = state.push("timestamp_open", "a", 1);
-      token.attrs = [ [ "href", fullUrl ] ];
+      token.attrs = [ [ useOnClick ? "href" : "onclick", fullUrl ], [ "class", classAttr ] ];
       token.markup = "timestamp";
       token.info = "auto";
       token = state.push("text", "", 0);
@@ -7891,9 +7896,14 @@
       // CSS language prefix for fenced blocks
       linkify: false,
       // autoconvert URL-like texts to links
-      timestamps: false,
+      timestamp: false,
       // autoconvert timestamps into clickable links
-      timestampHrefFormat: "timestamp://goto('$$time$$')",
+      useTimestampOnClick: true,
+      // use onclick attribute instead of href
+      timestampLinkClasses: [],
+      // classes to add to timestamp links
+      timestampActionFormat: "goto('$$time$$')",
+      // href or onclick
       // Enable some language-neutral replacements + quotes beautification
       typographer: false,
       // Double + single quotes replacement pairs, when typographer enabled,
@@ -7928,9 +7938,14 @@
       // CSS language prefix for fenced blocks
       linkify: false,
       // autoconvert URL-like texts to links
-      timestamps: false,
+      timestamp: false,
       // autoconvert timestamps into clickable links
-      timestampHrefFormat: "timestamp://goto('$$time$$')",
+      useTimestampOnClick: true,
+      // use onclick attribute instead of href
+      timestampLinkClasses: [],
+      // classes to add to timestamp links
+      timestampActionFormat: "goto('$$time$$')",
+      // href or onclick
       // Enable some language-neutral replacements + quotes beautification
       typographer: false,
       // Double + single quotes replacement pairs, when typographer enabled,
@@ -7972,9 +7987,14 @@
       // CSS language prefix for fenced blocks
       linkify: false,
       // autoconvert URL-like texts to links
-      timestamps: false,
+      timestamp: false,
       // autoconvert timestamps into clickable links
-      timestampHrefFormat: "timestamp://goto('$$time$$')",
+      useTimestampOnClick: true,
+      // use onclick attribute instead of href
+      timestampLinkClasses: [],
+      // classes to add to timestamp links
+      timestampActionFormat: "goto('$$time$$')",
+      // href or onclick
       // Enable some language-neutral replacements + quotes beautification
       typographer: false,
       // Double + single quotes replacement pairs, when typographer enabled,
