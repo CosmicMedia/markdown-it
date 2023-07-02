@@ -1,4 +1,4 @@
-/*! @cosmicmedia/markdown-it 13.1.1 https://github.com/cosmicmedia/markdown-it @license MIT */
+/*! @cosmicmedia/markdown-it 13.1.2 https://github.com/cosmicmedia/markdown-it @license MIT */
 (function(global, factory) {
   typeof exports === "object" && typeof module !== "undefined" ? module.exports = factory() : typeof define === "function" && define.amd ? define(factory) : (global = typeof globalThis !== "undefined" ? globalThis : global || self, 
   global.markdownit = factory());
@@ -5817,7 +5817,7 @@
     if (!silent) {
       state.pending = state.pending.slice(0, -proto.length);
       token = state.push("timestamp_open", "a", 1);
-      token.attrs = [ [ useOnClick ? "href" : "onclick", fullUrl ], [ "class", classAttr ] ];
+      token.attrs = [ [ useOnClick ? "onclick" : "href", fullUrl ], [ "class", classAttr ] ];
       token.markup = "timestamp";
       token.info = "auto";
       token = state.push("text", "", 0);
