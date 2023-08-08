@@ -1,4 +1,4 @@
-/*! @cosmicmedia/markdown-it 13.1.2 https://github.com/cosmicmedia/markdown-it @license MIT */
+/*! @cosmicmedia/markdown-it 13.1.3 https://github.com/cosmicmedia/markdown-it @license MIT */
 (function(global, factory) {
   typeof exports === "object" && typeof module !== "undefined" ? module.exports = factory() : typeof define === "function" && define.amd ? define(factory) : (global = typeof globalThis !== "undefined" ? globalThis : global || self, 
   global.markdownit = factory());
@@ -6170,6 +6170,9 @@
       return false;
     }
     pos = labelEnd + 1;
+    if (state.src.charCodeAt(pos) !== 40 /* ( */) {
+      return false;
+    }
     if (pos < max && state.src.charCodeAt(pos) === 40 /* ( */) {
       // Inline link
       // might have found a valid shortcut link, disable reference parsing
